@@ -1,10 +1,10 @@
-name: Run tests
+name: Run Tests
 
 on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on : ubuntu-latest
+  test: 
+    runs-on: ubuntu-latest 
 
     steps:
       - name: Checkout code
@@ -14,16 +14,18 @@ jobs:
         run: npm install
 
       - name: Create .env
-        run: echo "DATABASE_URL='file:./test.db'" > .env
+        run:  echo "DATABASE_URL='file:./dev.db'" > .env
+      - name: Include secret key
+        run: echo "SECRET_KEY='YOU SECRET KEY'" >> .env
 
-      - name: Creat prisma client
+      - name: Create prisma client
         run: npx prisma generate
 
       - name: Prisma db push
         run: npx prisma db push
-
+        
       - name: Load data
         run: npm run load_data
 
-      -name: Run tests
+      - name: Run tests
         run: npm test
